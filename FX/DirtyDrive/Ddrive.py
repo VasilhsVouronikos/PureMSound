@@ -29,6 +29,8 @@ import struct
 from sklearn import preprocessing
 import librosa
 
+PATH = "\\Audio_apps\\PureMSound\\outputs\\Ddrive.wav"
+
 def get_current_path():
 	path = os.getcwd().split("\\")
 	path.pop(0)
@@ -47,19 +49,27 @@ sys.path.insert(0,path_to_tools)
 from fft import audio_fft,audio_invfft
 from init_audio import init
 from visualizer import display_signal
+from scipy.io.wavfile import write
+wav_frames = []
 
 def update(paudio,frame,stream,buffer_size):
+	wav_file = set_output(frame)
+
 	data_out = frame.readframes(buffer_size) 
 	while len(data_out) > 0:
+
 		stream.write(data_out)
 		data_out = frame.readframes(buffer_size)
-		data_in = struct.unpack(str(2 * buffer_size) + 'h', data_out)
-		
-		modified_data = set_drive(data_in)
-		data_out = struct.pack(str(2*buffer_size)+'h', *modified_data)
+		d = list(data_out)
+		modified_data,data_np = set_drive(d)
+		data_out = bytes(modified_data)
+		wav_file.writeframesraw(data_out)
+	
 	stream.stop_stream()
 	stream.close()
 	paudio.terminate()
+
+	
 
 
 def apply_fft(signal):
@@ -72,15 +82,14 @@ def apply_fft(signal):
 def set_drive(data_in):
 	new_data = []
 	for i in range(len(data_in)):
-		if data_in[i] > -20:
-			new_data.append(-20)
+		if data_in[i] > 250:
+			new_data.append(250)
 		else:
 			new_data.append(data_in[i])
-	data_np = np.array(new_data)
-	amp,freq = apply_fft(data_np)
+	data_np = np.asarray(new_data, dtype=np.int16)
 	new_data = tuple(new_data)
 	
-	return new_data
+	return new_data,data_np
 
 
 def set_gain():
@@ -89,7 +98,21 @@ def set_gain():
 def filter():
 	return
 
+def set_output(frame):
+	nchannels = frame.getnchannels()
+	sampwidth = frame.getsampwidth()
+	framerate = frame.getframerate()
+	nframes = frame.getnframes()
+	comptype = "NONE"
+	compname = "not compressed"
+	wav_file = wave.open("Ddrive.wav", "w")
+
+	wav_file.setparams((nchannels, sampwidth, framerate, nframes,
+						comptype, compname))
+
+	return wav_file
 
 if __name__ == '__main__':
 	p,wf,stream,CHUNK,wav = init()
 	update(p,wf,stream,CHUNK)
+	#write_to_wav(wf,CHUNK)
