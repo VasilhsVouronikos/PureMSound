@@ -23,10 +23,11 @@
 
 import numpy as np 
 import os,sys
-import pyaudio as np
+import pyaudio as pa
 import wave
 import struct
 from sklearn import preprocessing
+import librosa
 
 def get_current_path():
 	path = os.getcwd().split("\\")
@@ -45,6 +46,7 @@ sys.path.insert(0,path_to_tools)
 
 from fft import audio_fft,audio_invfft
 from init_audio import init
+from visualizer import display_signal
 
 def update(paudio,frame,stream,buffer_size):
 	data_out = frame.readframes(buffer_size) 
@@ -60,8 +62,9 @@ def update(paudio,frame,stream,buffer_size):
 	paudio.terminate()
 
 
-def apply_fft():
- 	return
+def apply_fft(signal):
+	amp,freq = audio_fft(signal)
+	return amp,freq
 
 # -- TO DO -------
 # Normalize incoming data
@@ -69,10 +72,12 @@ def apply_fft():
 def set_drive(data_in):
 	new_data = []
 	for i in range(len(data_in)):
-		if data_in[i] > -100:
-			new_data.append(-100)
+		if data_in[i] > -20:
+			new_data.append(-20)
 		else:
 			new_data.append(data_in[i])
+	data_np = np.array(new_data)
+	amp,freq = apply_fft(data_np)
 	new_data = tuple(new_data)
 	
 	return new_data
@@ -86,5 +91,5 @@ def filter():
 
 
 if __name__ == '__main__':
-	p,wf,stream,CHUNK = init()
+	p,wf,stream,CHUNK,wav = init()
 	update(p,wf,stream,CHUNK)
