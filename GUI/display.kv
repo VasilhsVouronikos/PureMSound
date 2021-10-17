@@ -1,0 +1,42 @@
+<CustomSliderDrive@Slider>:
+	id: drive
+	min: 0
+	max: 100
+	value: 0
+	size_hint: 0.3,0.5
+	
+
+<CustomSliderGain@Slider>:
+	id: gain
+	min: 0
+	max: 100
+	value: 0
+	size_hint: 0.3,0.5
+
+
+<FloatLayout>:
+	CustomSliderDrive:
+		orientation: 'vertical'
+		pos_hint: {'x': .005,'top': 0.8,'bottom': 0.1}
+		on_value: txtdrive.text = str(int(self.value))
+
+
+	CustomSliderGain:
+		orientation: 'vertical'
+		pos_hint: {'x': .2,'top': 0.8,'bottom': 0.1}
+		on_value: txtgain.text = str(int(self.value))
+
+	Label:
+		id: txtdrive
+		x: -277
+		y: 200
+		color: (1, 0, 0, 1)
+		text: '0'
+
+	Label:
+		id: txtgain
+		x: -122
+		y: 200
+		color: (1, 0, 0, 1)
+		text: '0'
+
