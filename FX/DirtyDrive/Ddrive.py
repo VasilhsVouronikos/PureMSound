@@ -27,63 +27,70 @@ import pyaudio as pa
 import wave
 import struct
 from sklearn import preprocessing
-import librosa
+import keyboard
+
+global RECEIVED,VAL
+
+RECEIVED = False
+VAL = 0
+
+
+CHUNK = 1024 * 2
+MODE = 'FX'
+WAV = 'samples\\bass\\bass4.wav'
+
+p = pa.PyAudio()
+
 
 PATH = "\\Audio_apps\\PureMSound\\outputs\\Ddrive.wav"
 
-def get_current_path():
-	path = os.getcwd().split("\\")
-	path.pop(0)
-	path.pop(len(path)-1)
-	path.pop(len(path)-1)
-	new_path = "\\"+"\\".join(path)
-	
-	return new_path
 
-path_to_tools = get_current_path()
-
-sys.path.insert(0,path_to_tools)
-
-
-
-from fft import audio_fft,audio_invfft
-from init_audio import init
-from visualizer import display_signal
 from scipy.io.wavfile import write
 wav_frames = []
 
 def update(paudio,frame,stream,buffer_size):
+	global RECEIVED,VAL
 	wav_file = set_output(frame)
 
 	data_out = frame.readframes(buffer_size) 
 	while len(data_out) > 0:
-
 		stream.write(data_out)
 		data_out = frame.readframes(buffer_size)
-		d = list(data_out)
-		modified_data,data_np = set_drive(d)
-		data_out = bytes(modified_data)
+		data_out_list = list(data_out)
+		if(RECEIVED):
+			modified_data,data_np = set_drive(data_out_list,VAL)
+			data_out = bytes(modified_data)
+		else:
+			data_out = bytes(data_out)
 		wav_file.writeframesraw(data_out)
 	
 	stream.stop_stream()
 	stream.close()
 	paudio.terminate()
 
-	
+
+def change_drive(val):
+	global RECEIVED,VAL
+	RECEIVED = True
+	VAL = val
+
+def reset_to_original():
+	global RECEIVED,VAL
+	RECEIVED = False
+	VAL = 0
+
 
 
 def apply_fft(signal):
 	amp,freq = audio_fft(signal)
 	return amp,freq
 
-# -- TO DO -------
-# Normalize incoming data
 
-def set_drive(data_in):
+def set_drive(data_in,val):
 	new_data = []
 	for i in range(len(data_in)):
-		if data_in[i] > 250:
-			new_data.append(250)
+		if data_in[i] > val:
+			new_data.append(val)
 		else:
 			new_data.append(data_in[i])
 	data_np = np.asarray(new_data, dtype=np.int16)
@@ -99,6 +106,7 @@ def filter():
 	return
 
 def set_output(frame):
+
 	nchannels = frame.getnchannels()
 	sampwidth = frame.getsampwidth()
 	framerate = frame.getframerate()
@@ -112,7 +120,28 @@ def set_output(frame):
 
 	return wav_file
 
+def init():
+	if(MODE == 'FX'):
+		wf = wave.open(WAV, 'rb')
+		stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+			channels=wf.getnchannels(),
+			rate=wf.getframerate(),
+			output=True)
+
+
+	latency = stream.get_output_latency()
+	input_device = list(p.get_default_input_device_info().values())[2]
+	output_device = list(p.get_default_output_device_info().values())[2]
+
+
+	get_sound_info(latency,input_device,output_device)
+	return p,wf,stream,CHUNK,WAV
+
+def get_sound_info(lat,inputd,output):
+	print("Output latency: ",lat,"\n",
+		"Input device(mic): ",inputd,"\n",
+		"Output device: ",output)
+
 if __name__ == '__main__':
-	p,wf,stream,CHUNK,wav = init()
+	p,wf,stream,CHUNK,WAV = init()
 	update(p,wf,stream,CHUNK)
-	#write_to_wav(wf,CHUNK)

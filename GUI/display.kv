@@ -1,3 +1,4 @@
+#:import threading threading
 <CustomSliderDrive@Slider>:
 	id: drive
 	min: 0
@@ -18,7 +19,11 @@
 	CustomSliderDrive:
 		orientation: 'vertical'
 		pos_hint: {'x': .005,'top': 0.8,'bottom': 0.1}
-		on_value: txtdrive.text = str(int(self.value))
+		on_value: 
+			txtdrive.text = str(int(self.value))
+			val = int(self.value)
+			val = int((((val - 0) * (255 - 0)) / (100 - 0)) + 0)
+			threading.Thread(target = app.send_val, args=([val])).start()
 
 
 	CustomSliderGain:
