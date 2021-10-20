@@ -1,11 +1,20 @@
 import kivy
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+
+
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.slider import Slider
 from kivy.uix.floatlayout import FloatLayout
-from kivy.config import Config
+from kivy.uix.actionbar import ActionBar
+from kivy.uix.actionbar import ActionItem
+from kivy.uix.actionbar import ActionButton
+from kivy.uix.actionbar import ActionBarException
 import os,sys
 import threading
+
+
 
 
 def get_current_path():
@@ -36,7 +45,6 @@ class Display(App):
 		self.stream = None
 		self.CHUNK = None
 		self.wav = None
-		Config.set('graphics', 'resizable', False)
 		#s = Slider(min=-100, max=100, value=25,orientation='vertical')
 		p,wf,stream,CHUNK,wav = init()
 

@@ -4,7 +4,7 @@
 	min: 0
 	max: 100
 	value: 0
-	size_hint: 0.3,0.5
+	size_hint: 0.3,0.35
 	
 
 <CustomSliderGain@Slider>:
@@ -12,7 +12,7 @@
 	min: 0
 	max: 100
 	value: 0
-	size_hint: 0.3,0.5
+	size_hint: 0.3,0.35
 
 
 <FloatLayout>:
@@ -28,20 +28,98 @@
 
 	CustomSliderGain:
 		orientation: 'vertical'
-		pos_hint: {'x': .2,'top': 0.8,'bottom': 0.1}
+		pos_hint: {'x': .17,'top': 0.8,'bottom': 0.1}
 		on_value: txtgain.text = str(int(self.value))
 
 	Label:
 		id: txtdrive
 		x: -277
 		y: 200
-		color: (1, 0, 0, 1)
+		color: (1, 1, 1, 1)
 		text: '0'
 
 	Label:
 		id: txtgain
-		x: -122
+		x: -145
 		y: 200
-		color: (1, 0, 0, 1)
+		color: (1, 1, 1, 1)
 		text: '0'
+
+	Label:
+		id: ldrive
+		x: -277
+		y: -70
+		color: (1, 0, 1, 1)
+		text: 'drive'
+
+	Label:
+		id: lgain
+		x: -145
+		y: -70
+		color: (1, 0, 1, 1)
+		text: 'gain'
+
+	ActionBar:
+		pos_hint: {'bootom': 1}
+		size_hint: (1, 0.07)
+		background_color: 0, .02, .9, .5
+		canvas:
+	        Color:
+	        	rgba: (1,1,1,1)
+	        Line:
+	            width: 1
+            	rectangle: self.x, self.y, self.width, self.height
+		ActionView:
+	        use_separator: True
+	        ActionPrevious:
+	            title: ''
+	            app_icon: 'M:\\programming\\Audio_apps\\PureMSound\\GUI\\icons\\wave.png'
+	            with_previous: False
+	            size_hint_x: None
+	            width: 0
+	        ActionOverflow:
+	        ActionButton:
+	            icon: ''
+	        ActionButton:
+	            important: True
+	            text: 'Important'
+	        ActionButton:
+	            text: 'Btn2'
+	        ActionButton:
+	            text: 'Btn3'
+	        ActionButton:
+	            text: 'Btn4'
+					
+					
+	ActionBar:
+		pos_hint: {'top': 1}
+		size_hint: (1, 0.07)
+		background_color: 0, .02, .9, .5
+		canvas:
+	        Color:
+	        	rgba: (1,1,1,1)
+	        Line:
+	            width: 1
+            	rectangle: self.x, self.y, self.width, self.height
+		ActionView:
+	        use_separator: True
+	        ActionButton:
+	            icon: ''
+	        ActionButton:
+	            text: 'File'
+	        ActionButton:
+	            text: 'Settings'
+	        ActionButton:
+	            text: 'Project'
+	        ActionButton:
+	            text: 'Help'
+	        ActionPrevious:
+	            title: ''
+	            app_icon: 'M:\\programming\\Audio_apps\\PureMSound\\GUI\\icons\\wave.png'
+	            with_previous: False
+	            size_hint_x: 0
+	            width: 0
+	        ActionOverflow:
+
+	        
 

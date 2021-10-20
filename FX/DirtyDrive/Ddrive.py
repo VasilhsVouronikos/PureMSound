@@ -37,7 +37,7 @@ VAL = 0
 
 CHUNK = 1024 * 2
 MODE = 'FX'
-WAV = 'samples\\bass\\bass4.wav'
+WAV = 'samples\\guitar\\acousticg.wav'
 
 p = pa.PyAudio()
 
