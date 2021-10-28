@@ -1,0 +1,4 @@
+Sampling rate: 44100
+Channels: Mono
+Buffer size: 2048
+Format: int16
