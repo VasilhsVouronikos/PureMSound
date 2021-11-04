@@ -17,3 +17,6 @@ made with kivy library.
 The project is on going so in the future more<br>
 effects will be made and input latency issues will<br>
 be resolved.
+
+
+![Alt text](M:\programming\Audio_apps\PureMSound\pics\Ddrive.jpg?raw=true "Optional Title")
