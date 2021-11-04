@@ -19,4 +19,4 @@ effects will be made and input latency issues will<br>
 be resolved.
 
 
-![sneak pic](https://github.com/VasilhsVouronikos/PureMSound/pics/Ddrive.jpg?raw=true "Optional Title")
+![sneak pic](https://github.com/VasilhsVouronikos/PureMSound/blob/main/pics/Ddrive.JPG?raw=true)
