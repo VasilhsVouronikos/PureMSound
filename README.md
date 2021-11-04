@@ -18,5 +18,5 @@ The project is on going so in the future more<br>
 effects will be made and input latency issues will<br>
 be resolved.
 
-## Α first raw pic 
+## Α first raw pic of Dirty Drive FX
 ![sneak pic](https://github.com/VasilhsVouronikos/PureMSound/blob/main/pics/Ddrive.JPG?raw=true)
