@@ -2,7 +2,7 @@
 PureMSound is currently developed to be an FX app/library <br>
 for real time audio proscessing.
 
-## For whos is is?
+## For whos is it?
 The goal is to be used from musical instrument players <br>
 as a digital 'pedal board' or for musicians that want to add <br>
 effects to their tracks.
